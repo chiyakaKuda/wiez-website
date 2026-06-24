@@ -6,13 +6,11 @@ import { ArrowRight, MapPin } from "lucide-react";
 import HeroCarousel from "@/components/hero/HeroCarousel";
 import HeroBackground from "@/components/hero/HeroBackground";
 import AnimatedNumber from "@/components/ui/AnimatedNumber";
-import EventCountdown from "@/components/hero/EventCountdown";
+import EventCountdown from "@/components/ui/EventCountdown";
 import SpeakerTimeline from "@/components/hero/SpeakerTimeline";
+import { SUMMIT_DATE, SUMMIT_LOCATION } from "@/lib/events";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-
-// Replace with the confirmed summit date/time once finalized.
-const EVENT_DATE = new Date("2026-07-08T09:00:00");
 
 const STATS = [
   { value: 500, suffix: "+", label: "Members" },
@@ -118,11 +116,11 @@ export default function Hero() {
             </h3>
             <p className="mt-1.5 flex items-center gap-1.5 font-sans text-sm text-slate-custom">
               <MapPin className="h-3.5 w-3.5 shrink-0" />
-              Harare International Conference Centre
+              {SUMMIT_LOCATION}
             </p>
 
             <div className="mt-5">
-              <EventCountdown targetDate={EVENT_DATE} />
+              <EventCountdown targetDate={SUMMIT_DATE} />
             </div>
           </motion.div>
 
