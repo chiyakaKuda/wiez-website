@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, MapPin } from "lucide-react";
 import HeroCarousel from "@/components/hero/HeroCarousel";
 import HeroBackground from "@/components/hero/HeroBackground";
-import AnimatedCounter from "@/components/hero/AnimatedCounter";
+import AnimatedNumber from "@/components/ui/AnimatedNumber";
 import EventCountdown from "@/components/hero/EventCountdown";
 import SpeakerTimeline from "@/components/hero/SpeakerTimeline";
 
@@ -87,13 +87,17 @@ export default function Hero() {
             className="mt-14 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-navy/10 pt-8 sm:grid-cols-4"
           >
             {STATS.map((stat, i) => (
-              <AnimatedCounter
-                key={stat.label}
-                value={stat.value}
-                suffix={stat.suffix}
-                label={stat.label}
-                delay={i * 0.1}
-              />
+              <div key={stat.label}>
+                <AnimatedNumber
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  delay={i * 0.1}
+                  className="font-heading text-3xl font-extrabold tracking-tight text-navy sm:text-4xl"
+                />
+                <div className="mt-1 font-sans text-sm text-slate-custom">
+                  {stat.label}
+                </div>
+              </div>
             ))}
           </motion.div>
         </motion.div>
