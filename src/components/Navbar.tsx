@@ -58,7 +58,9 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
-  const onDarkBackdrop = isOpen || !isScrolled;
+  // The hero behind the navbar is light, so links stay navy-toned at all
+  // scroll positions; only the navy fullscreen mobile menu needs light text.
+  const onDarkBackdrop = isOpen;
 
   return (
     <>
