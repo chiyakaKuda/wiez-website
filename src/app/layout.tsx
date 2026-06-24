@@ -24,6 +24,13 @@ const montserratBody = Montserrat({
   display: "swap",
 });
 
+const montserratLabel = Montserrat({
+  variable: "--font-montserrat-label",
+  subsets: ["latin"],
+  weight: "600",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Women in Engineering Zimbabwe",
   description:
@@ -38,7 +45,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${montserratHeading.variable} ${montserratNav.variable} ${montserratBody.variable} h-full antialiased`}
+      className={`${montserratHeading.variable} ${montserratNav.variable} ${montserratBody.variable} ${montserratLabel.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Navbar />

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, MapPin } from "lucide-react";
+import HeroCarousel from "@/components/hero/HeroCarousel";
 import HeroBackground from "@/components/hero/HeroBackground";
 import AnimatedCounter from "@/components/hero/AnimatedCounter";
 import EventCountdown from "@/components/hero/EventCountdown";
@@ -35,6 +36,7 @@ const itemVariants = {
 export default function Hero() {
   return (
     <section className="relative isolate bg-white lg:flex lg:h-screen lg:min-h-[760px] lg:items-center">
+      <HeroCarousel />
       <HeroBackground />
 
       <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 gap-16 px-6 py-28 lg:grid-cols-[60%_40%] lg:gap-10 lg:px-8 lg:pt-24 lg:pb-12">
@@ -45,17 +47,9 @@ export default function Hero() {
           variants={containerVariants}
           className="flex flex-col justify-center"
         >
-          <motion.span
-            variants={itemVariants}
-            className="inline-flex w-fit items-center gap-2 rounded-full border border-navy/10 bg-navy/5 px-4 py-1.5 font-nav text-xs font-semibold uppercase tracking-[0.14em] text-navy"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-lime" />
-            Empowering Women Engineers Across Zimbabwe
-          </motion.span>
-
           <motion.h1
             variants={itemVariants}
-            className="mt-6 font-heading text-5xl font-extrabold leading-[1.05] tracking-tight text-navy sm:text-6xl lg:text-[4.25rem]"
+            className="font-heading text-5xl font-extrabold leading-[1.05] tracking-tight text-navy sm:text-6xl lg:text-[4.25rem]"
           >
             Engineering Zimbabwe&apos;s Future,{" "}
             <span className="text-lime">Together</span>

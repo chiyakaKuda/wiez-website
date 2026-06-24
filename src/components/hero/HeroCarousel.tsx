@@ -61,19 +61,6 @@ export default function HeroCarousel() {
           lighter on the right so the photo still reads behind the glass cards. */}
       <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/40" />
       <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/50" />
-
-      <div className="absolute inset-0 flex items-end justify-center gap-2 pb-6 lg:hidden">
-        {SLIDES.map((slide, i) => (
-          <span
-            key={slide.src}
-            className={
-              i === index
-                ? "h-1.5 w-6 rounded-full bg-navy transition-all duration-300"
-                : "h-1.5 w-1.5 rounded-full bg-navy/25 transition-all duration-300"
-            }
-          />
-        ))}
-      </div>
     </div>
   );
 }

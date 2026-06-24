@@ -19,17 +19,6 @@ export default function HeroBackground() {
       aria-hidden
       className="pointer-events-none absolute inset-0 overflow-hidden"
     >
-      <div
-        className="absolute inset-0 opacity-[0.035]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, #0F172A 1px, transparent 1px), linear-gradient(to bottom, #0F172A 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-        }}
-      />
-
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,transparent,white)]" />
-
       <motion.div
         style={{ y: ySlow }}
         className="absolute -top-24 right-[6%] h-[420px] w-[420px] rounded-full bg-lime/10 blur-3xl"
