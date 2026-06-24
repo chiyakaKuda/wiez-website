@@ -10,7 +10,7 @@ import {
   Users,
 } from "lucide-react";
 import ImpactPattern from "@/components/impact/ImpactPattern";
-import StatCard from "@/components/impact/StatCard";
+import StatCard from "@/components/ui/StatCard";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
