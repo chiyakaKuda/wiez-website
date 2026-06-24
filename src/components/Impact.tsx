@@ -40,7 +40,10 @@ const cardVariants = {
 
 export default function Impact() {
   return (
-    <section className="relative overflow-hidden bg-white py-24 lg:py-32">
+    <section
+      id="impact"
+      className="relative overflow-hidden bg-white py-24 lg:py-32"
+    >
       <ImpactPattern />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">

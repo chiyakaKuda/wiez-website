@@ -9,6 +9,7 @@ import SuccessStories from "@/components/SuccessStories";
 import Partners from "@/components/Partners";
 import Newsletter from "@/components/Newsletter";
 import Contact from "@/components/Contact";
+import SectionNavigator from "@/components/SectionNavigator";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <Partners />
       <Newsletter />
       <Contact />
+      <SectionNavigator />
     </>
   );
 }

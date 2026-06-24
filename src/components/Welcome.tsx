@@ -20,7 +20,10 @@ const itemVariants = {
 
 export default function Welcome() {
   return (
-    <section className="relative overflow-hidden bg-white py-24 lg:py-32">
+    <section
+      id="welcome"
+      className="relative overflow-hidden bg-white py-24 lg:py-32"
+    >
       <WelcomePattern />
 
       <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-16 px-6 lg:grid-cols-2 lg:items-start lg:gap-20 lg:px-8">

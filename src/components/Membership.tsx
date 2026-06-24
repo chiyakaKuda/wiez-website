@@ -141,7 +141,7 @@ const cardVariants = {
 
 export default function Membership() {
   return (
-    <section className="relative bg-white py-24 lg:py-32">
+    <section id="membership" className="relative bg-white py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           initial="hidden"

@@ -33,7 +33,10 @@ const itemVariants = {
 
 export default function Hero() {
   return (
-    <section className="relative isolate bg-white lg:flex lg:h-screen lg:min-h-[760px] lg:items-center">
+    <section
+      id="hero"
+      className="relative isolate bg-white lg:flex lg:h-screen lg:min-h-[760px] lg:items-center"
+    >
       <HeroCarousel />
       <HeroBackground />
 
