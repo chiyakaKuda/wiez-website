@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import FloatingActions from "@/components/FloatingActions";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const montserratHeading = Montserrat({
@@ -51,6 +52,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Navbar />
         {children}
+        <Footer />
         <FloatingActions />
       </body>
     </html>

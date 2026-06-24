@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Logo from "@/components/Logo";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -16,29 +17,6 @@ const NAV_LINKS = [
 ];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-
-function Logo({ light }: { light: boolean }) {
-  return (
-    <div className="flex flex-col leading-none">
-      <span
-        className={cn(
-          "font-heading text-2xl font-extrabold tracking-tight transition-colors duration-300",
-          light ? "text-white" : "text-navy"
-        )}
-      >
-        W<span className="text-lime">i</span>EZ
-      </span>
-      <span
-        className={cn(
-          "mt-1 font-nav text-[10px] font-medium uppercase tracking-[0.18em] transition-colors duration-300",
-          light ? "text-white/70" : "text-slate-custom"
-        )}
-      >
-        Women in Engineering Zimbabwe
-      </span>
-    </div>
-  );
-}
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
