@@ -8,8 +8,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-navy: #0f172a;
+  --color-lime: #a3e635;
+  --color-slate-custom: #64748b;
+  --font-sans: var(--font-montserrat-body);
+  --font-heading: var(--font-montserrat-heading);
+  --font-nav: var(--font-montserrat-nav);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +26,18 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-montserrat-body), Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-montserrat-heading), Arial, Helvetica, sans-serif;
+}
+
+nav {
+  font-family: var(--font-montserrat-nav), Arial, Helvetica, sans-serif;
 }
