@@ -1,6 +1,6 @@
 import "./load-env";
 
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { db } from "./index";
 import { roles, users, userRoles } from "./schema";
 import { auth } from "@/lib/auth";
@@ -36,6 +36,52 @@ const ROLE_DEFINITIONS: { name: UserRole; description: string }[] = [
   },
 ];
 
+type TestUser = {
+  name: string;
+  email: string;
+  password: string;
+  role: UserRole;
+};
+
+const TEST_USERS: TestUser[] = [
+  {
+    name: "WiEZ Super Admin",
+    email: process.env.SEED_SUPER_ADMIN_EMAIL ?? "admin@wiez.co.zw",
+    password: process.env.SEED_SUPER_ADMIN_PASSWORD ?? "WiEZ@Admin2026!",
+    role: "super_admin",
+  },
+  {
+    name: "Test Org Admin",
+    email: "orgadmin@wiez.co.zw",
+    password: "WiEZ@OrgAdmin2026!",
+    role: "org_admin",
+  },
+  {
+    name: "Test Membership Officer",
+    email: "membership@wiez.co.zw",
+    password: "WiEZ@Membership2026!",
+    role: "membership_officer",
+  },
+  {
+    name: "Test Events Manager",
+    email: "events@wiez.co.zw",
+    password: "WiEZ@Events2026!",
+    role: "events_manager",
+  },
+  {
+    name: "Test Content Editor",
+    email: "content@wiez.co.zw",
+    password: "WiEZ@Content2026!",
+    role: "content_editor",
+  },
+  {
+    name: "Test Member",
+    email: "member@wiez.co.zw",
+    password: "WiEZ@Member2026!",
+    role: "member",
+  },
+];
+
 async function seedRoles() {
   console.log("Seeding roles...");
   for (const role of ROLE_DEFINITIONS) {
@@ -51,13 +97,7 @@ async function seedRoles() {
   }
 }
 
-async function seedSuperAdmin() {
-  const name = "WiEZ Super Admin";
-  const email = process.env.SEED_SUPER_ADMIN_EMAIL ?? "admin@wiez.co.zw";
-  const password = process.env.SEED_SUPER_ADMIN_PASSWORD ?? "WiEZ@Admin2026!";
-
-  console.log("Seeding super admin user...");
-
+async function seedUser({ name, email, password, role }: TestUser) {
   let userId: string | undefined;
 
   const existingUser = await db.query.users.findFirst({
@@ -72,48 +112,52 @@ async function seedSuperAdmin() {
       body: { name, email, password },
     });
     if (!result.user?.id) {
-      throw new Error("Failed to create super admin user via auth.api.signUpEmail");
+      throw new Error(`Failed to create user "${email}" via auth.api.signUpEmail`);
     }
     userId = result.user.id;
     console.log(`  - created user "${email}".`);
   }
 
-  // The super admin must be able to sign in immediately, bypassing the
-  // normal email verification requirement.
-  await db
-    .update(users)
-    .set({ emailVerified: true })
-    .where(eq(users.id, userId));
+  // Test users must be able to sign in immediately, bypassing the normal
+  // email verification requirement.
+  await db.update(users).set({ emailVerified: true }).where(eq(users.id, userId));
 
-  const superAdminRole = await db.query.roles.findFirst({
-    where: eq(roles.name, "super_admin"),
+  const dbRole = await db.query.roles.findFirst({
+    where: eq(roles.name, role),
   });
-  if (!superAdminRole) {
-    throw new Error('"super_admin" role not found — did seedRoles() run first?');
+  if (!dbRole) {
+    throw new Error(`"${role}" role not found — did seedRoles() run first?`);
   }
 
   const existingAssignment = await db.query.userRoles.findFirst({
-    where: (table, { and, eq: equals }) =>
-      and(equals(table.userId, userId!), equals(table.roleId, superAdminRole.id)),
+    where: and(eq(userRoles.userId, userId), eq(userRoles.roleId, dbRole.id)),
   });
 
   if (existingAssignment) {
-    console.log("  - super_admin role already assigned.");
+    console.log(`  - "${role}" role already assigned.`);
   } else {
-    await db.insert(userRoles).values({
-      userId,
-      roleId: superAdminRole.id,
-    });
-    console.log("  - assigned super_admin role.");
+    await db.insert(userRoles).values({ userId, roleId: dbRole.id });
+    console.log(`  - assigned "${role}" role.`);
   }
+}
 
-  console.log(`\nSuper admin ready:\n  email: ${email}\n  password: ${password}`);
+async function seedTestUsers() {
+  console.log("Seeding test users...");
+  for (const testUser of TEST_USERS) {
+    console.log(`\n${testUser.role}:`);
+    await seedUser(testUser);
+  }
 }
 
 async function main() {
   await seedRoles();
-  await seedSuperAdmin();
-  console.log("\nSeed complete.");
+  console.log();
+  await seedTestUsers();
+
+  console.log("\nSeed complete. Test accounts (all use the same flow, just sign in):\n");
+  for (const testUser of TEST_USERS) {
+    console.log(`  ${testUser.role.padEnd(20)} ${testUser.email.padEnd(28)} ${testUser.password}`);
+  }
 }
 
 main()
