@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
-import Navbar from "@/components/Navbar";
-import FloatingActions from "@/components/FloatingActions";
-import Footer from "@/components/Footer";
+import { Toaster } from "sonner";
+import SiteChrome from "@/components/SiteChrome";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
 const montserratHeading = Montserrat({
   variable: "--font-montserrat-heading",
@@ -47,13 +47,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${montserratHeading.variable} ${montserratNav.variable} ${montserratBody.variable} ${montserratLabel.variable} h-full antialiased`}
+      className={cn(
+        "h-full",
+        "antialiased",
+        montserratHeading.variable,
+        montserratNav.variable,
+        montserratBody.variable,
+        montserratLabel.variable,
+        "font-sans"
+      )}
     >
       <body className="min-h-full flex flex-col">
-        <Navbar />
-        {children}
-        <Footer />
-        <FloatingActions />
+        <SiteChrome>{children}</SiteChrome>
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );
