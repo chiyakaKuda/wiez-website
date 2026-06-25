@@ -2,37 +2,14 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
 import { getUserWithRoles } from "@/lib/auth-utils";
-import { isAdminRole } from "@/lib/rbac";
-import type { UserRole } from "@/types/auth";
+import { isAdminRole, SECTION_ROLES } from "@/lib/rbac";
 
 // Sub-paths under /admin that require a specific subset of roles, beyond
 // the general "any admin role" check applied to /admin/* as a whole.
-const ADMIN_SUB_ROUTE_ROLES: { prefix: string; roles: UserRole[] }[] = [
-  {
-    prefix: "/admin/users",
-    roles: ["super_admin"],
-  },
-  {
-    prefix: "/admin/members",
-    roles: ["membership_officer", "org_admin", "super_admin"],
-  },
-  {
-    prefix: "/admin/events",
-    roles: ["events_manager", "org_admin", "super_admin"],
-  },
-  {
-    prefix: "/admin/content",
-    roles: ["content_editor", "org_admin", "super_admin"],
-  },
-  {
-    prefix: "/admin/reports",
-    roles: ["org_admin", "super_admin"],
-  },
-  {
-    prefix: "/admin/settings",
-    roles: ["org_admin", "super_admin"],
-  },
-];
+const ADMIN_SUB_ROUTE_ROLES = Object.entries(SECTION_ROLES).map(([section, roles]) => ({
+  prefix: `/admin/${section}`,
+  roles,
+}));
 
 const AUTH_PAGES = ["/sign-in", "/sign-up"];
 

@@ -65,6 +65,18 @@ export const ADMIN_ROLES: UserRole[] = [
   "content_editor",
 ];
 
+/** Roles allowed into each /admin/* sub-section, shared by proxy.ts and each route's own layout. */
+export const SECTION_ROLES = {
+  members: ["membership_officer", "org_admin", "super_admin"],
+  memberships: ["membership_officer", "org_admin", "super_admin"],
+  events: ["events_manager", "org_admin", "super_admin"],
+  payments: ["membership_officer", "org_admin", "super_admin"],
+  content: ["content_editor", "org_admin", "super_admin"],
+  reports: ["org_admin", "super_admin"],
+  settings: ["org_admin", "super_admin"],
+  users: ["super_admin"],
+} as const satisfies Record<string, UserRole[]>;
+
 export const ROLE_LABELS: Record<UserRole, string> = {
   super_admin: "Super Admin",
   org_admin: "Organization Admin",

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { Toaster } from "sonner";
 import SiteChrome from "@/components/SiteChrome";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -58,8 +59,29 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
-        <SiteChrome>{children}</SiteChrome>
-        <Toaster richColors position="top-right" />
+        <TooltipProvider>
+          <SiteChrome>{children}</SiteChrome>
+        </TooltipProvider>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: '#0F172A',
+              color: '#FFFFFF',
+              border: '1px solid #1E293B',
+              borderRadius: '8px',
+              fontFamily: 'Montserrat, sans-serif',
+              fontSize: '14px',
+              fontWeight: '500',
+            },
+            classNames: {
+              success: 'border-l-4 border-l-[#A3E635]',
+              error: 'border-l-4 border-l-red-500',
+              warning: 'border-l-4 border-l-yellow-500',
+              info: 'border-l-4 border-l-blue-500',
+            },
+          }}
+        />
       </body>
     </html>
   );
