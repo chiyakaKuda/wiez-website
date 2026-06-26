@@ -1,3 +1,4 @@
+import { after } from "next/server";
 import { processIncomingMessage } from "@/lib/whatsapp/dispatcher";
 
 // Meta webhook verification handshake.
@@ -18,10 +19,15 @@ export async function POST(req: Request) {
 
   // Always return 200 immediately — Meta retries aggressively on non-2xx
   // responses, and a slow chatbot turn would otherwise cause duplicate
-  // deliveries. Processing happens after the response is sent.
-  processIncomingMessage(body).catch((error) => {
-    console.error("Failed to process WhatsApp message:", error);
-  });
+  // deliveries. `after()` keeps the serverless invocation alive (via
+  // Vercel's waitUntil) until processing finishes, even though the response
+  // has already been sent — a bare un-awaited promise gets killed mid-flight
+  // on serverless platforms as soon as the response goes out.
+  after(() =>
+    processIncomingMessage(body).catch((error) => {
+      console.error("Failed to process WhatsApp message:", error);
+    })
+  );
 
   return new Response("OK", { status: 200 });
 }
