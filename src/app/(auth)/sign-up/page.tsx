@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
-import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, Loader2, Mail } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -61,10 +62,10 @@ const STEP_ONE_FIELDS = [
 ] as const;
 
 export default function SignUpPage() {
+  const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   const {
     register,
@@ -78,6 +79,8 @@ export default function SignUpPage() {
       name: "",
       email: "",
       phone: "",
+      province: "" as SignUpValues["province"],
+      engineeringDiscipline: "" as SignUpValues["engineeringDiscipline"],
       password: "",
       confirmPassword: "",
       terms: false,
@@ -104,37 +107,8 @@ export default function SignUpPage() {
       return;
     }
 
-    setSubmitted(true);
-  }
-
-  if (submitted) {
-    return (
-      <AuthSplitScreen>
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: EASE }}
-          className="flex flex-col items-center text-center"
-        >
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-lime">
-            <Mail className="h-7 w-7 text-navy" />
-          </div>
-          <h1 className="mt-5 font-heading text-2xl font-extrabold text-navy">
-            Check your email to verify your account
-          </h1>
-          <p className="mt-2 max-w-sm font-sans text-sm text-slate-custom">
-            We&apos;ve sent a verification link to your email address. Click
-            it to activate your WiEZ account.
-          </p>
-          <Link
-            href="/sign-in"
-            className="mt-8 font-nav text-sm font-semibold text-navy hover:text-lime"
-          >
-            Return to sign in
-          </Link>
-        </motion.div>
-      </AuthSplitScreen>
-    );
+    toast.success("Account created! Welcome to WiEZ.");
+    router.push(result.data?.redirectTo || "/dashboard");
   }
 
   return (

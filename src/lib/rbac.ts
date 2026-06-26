@@ -72,6 +72,7 @@ export const SECTION_ROLES = {
   events: ["events_manager", "org_admin", "super_admin"],
   payments: ["membership_officer", "org_admin", "super_admin"],
   content: ["content_editor", "org_admin", "super_admin"],
+  whatsapp: ["org_admin", "super_admin"],
   reports: ["org_admin", "super_admin"],
   settings: ["org_admin", "super_admin"],
   users: ["super_admin"],

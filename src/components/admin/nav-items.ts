@@ -8,6 +8,8 @@ import {
   BarChart3,
   Settings,
   ShieldCheck,
+  Award,
+  MessageCircle,
   type LucideIcon,
 } from "lucide-react";
 import type { UserRole } from "@/types/auth";
@@ -29,6 +31,11 @@ export const NAV_SECTIONS: NavSection[] = [
     label: "OVERVIEW",
     roles: "all",
     links: [{ label: "Dashboard", href: "/admin", icon: LayoutDashboard }],
+  },
+  {
+    label: "MY MEMBERSHIP",
+    roles: ["member"],
+    links: [{ label: "My Membership", href: "/dashboard/membership", icon: Award }],
   },
   {
     label: "MEMBERSHIP",
@@ -57,6 +64,7 @@ export const NAV_SECTIONS: NavSection[] = [
     label: "ADMINISTRATION",
     roles: ["super_admin", "org_admin"],
     links: [
+      { label: "WhatsApp", href: "/admin/whatsapp", icon: MessageCircle },
       { label: "Reports", href: "/admin/reports", icon: BarChart3 },
       { label: "Settings", href: "/admin/settings", icon: Settings },
     ],
@@ -92,9 +100,11 @@ export function isNavLinkActive(pathname: string, href: string): boolean {
 const ROUTE_TITLES: Record<string, string> = {
   "/admin": "Dashboard",
   "/dashboard": "Dashboard",
+  "/dashboard/membership": "My Membership",
   "/admin/members": "Members",
   "/admin/memberships": "Memberships",
   "/admin/events": "Events",
+  "/admin/whatsapp": "WhatsApp",
   "/admin/payments": "Payments",
   "/admin/reports": "Reports",
   "/admin/users": "System Users",
@@ -105,6 +115,10 @@ const ROUTE_TITLES: Record<string, string> = {
 export function getPageTitle(pathname: string): { title: string; breadcrumb: string } {
   if (pathname === "/dashboard") return { title: "Dashboard", breadcrumb: "Dashboard" };
   if (pathname === "/admin") return { title: "Dashboard", breadcrumb: "Admin" };
+  if (pathname.startsWith("/dashboard/")) {
+    const title = ROUTE_TITLES[pathname] ?? "Dashboard";
+    return { title, breadcrumb: `Dashboard / ${title}` };
+  }
 
   const title = ROUTE_TITLES[pathname] ?? "Admin";
   return { title, breadcrumb: `Admin / ${title}` };

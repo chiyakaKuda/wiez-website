@@ -2,9 +2,10 @@ import "./load-env";
 
 import { eq, and } from "drizzle-orm";
 import { db } from "./index";
-import { roles, users, userRoles } from "./schema";
+import { roles, users, userRoles, membershipTypes } from "./schema";
 import { auth } from "@/lib/auth";
 import type { UserRole } from "@/types/auth";
+import type { MembershipTypeName } from "@/types/memberships";
 
 const ROLE_DEFINITIONS: { name: UserRole; description: string }[] = [
   {
@@ -33,6 +34,102 @@ const ROLE_DEFINITIONS: { name: UserRole; description: string }[] = [
   {
     name: "member",
     description: "A registered WiEZ member with access to their own profile and resources.",
+  },
+];
+
+type MembershipTypeDefinition = {
+  name: MembershipTypeName;
+  description: string;
+  fee: number;
+  eligibilityCriteria: string;
+  requiredDocuments: string[];
+  benefits: string[];
+  terms: string;
+};
+
+const MEMBERSHIP_TYPE_DEFINITIONS: MembershipTypeDefinition[] = [
+  {
+    name: "Student",
+    description: "For students currently pursuing an engineering qualification.",
+    fee: 10,
+    eligibilityCriteria:
+      "Currently enrolled in an engineering degree program at a recognized Zimbabwean or international institution.",
+    requiredDocuments: ["Student ID", "Proof of Enrollment", "CV", "Passport Photo"],
+    benefits: [
+      "Professional Development Workshops",
+      "National Networking Events",
+      "Mentorship Programme Access",
+      "Digital Membership Certificate & Card",
+      "Recognition in WiEZ Directory",
+    ],
+    terms:
+      "Student membership is valid only while enrolled. Members must provide updated proof of enrollment annually upon renewal.",
+  },
+  {
+    name: "Graduate",
+    description: "For recent engineering graduates building their careers.",
+    fee: 25,
+    eligibilityCriteria:
+      "Engineering graduate within 5 years of graduation, holding a recognized engineering qualification.",
+    requiredDocuments: ["Degree Certificate", "CV", "Professional Headshot", "Transcript (Optional)"],
+    benefits: [
+      "Professional Development Workshops",
+      "National Networking Events",
+      "Mentorship Programme Access",
+      "Digital Membership Certificate & Card",
+      "Recognition in WiEZ Directory",
+      "Access to Job Board & Career Resources",
+    ],
+    terms:
+      "Graduate membership is available for up to 5 years from your graduation date, after which you must transition to Professional membership upon renewal.",
+  },
+  {
+    name: "Professional",
+    description: "For practicing engineers with 5+ years of experience.",
+    fee: 50,
+    eligibilityCriteria:
+      "Practicing engineer with 5 or more years of professional experience in an engineering discipline.",
+    requiredDocuments: [
+      "Degree Certificate",
+      "CV",
+      "Professional Headshot",
+      "Proof of Employment",
+      "Engineering Council Registration (Optional)",
+    ],
+    benefits: [
+      "Professional Development Workshops",
+      "National Networking Events",
+      "Mentorship Programme Access",
+      "Digital Membership Certificate & Card",
+      "Recognition in WiEZ Directory",
+      "Access to Job Board & Career Resources",
+      "Priority speaking opportunities at WiEZ events",
+    ],
+    terms:
+      "Professional membership requires 5 or more years of verifiable engineering experience. WiEZ reserves the right to request updated proof of employment at renewal.",
+  },
+  {
+    name: "Corporate",
+    description: "For organizations championing women in engineering.",
+    fee: 200,
+    eligibilityCriteria:
+      "Registered companies and organizations that actively support women in engineering within Zimbabwe.",
+    requiredDocuments: [
+      "Certificate of Incorporation",
+      "Company Profile",
+      "Tax Clearance (Optional)",
+      "Letter of Intent",
+    ],
+    benefits: [
+      "Organizational recognition in the WiEZ Directory",
+      "Access to the WiEZ talent pipeline and job board postings",
+      "Invitation to WiEZ corporate partner events",
+      "Co-branded women-in-engineering initiatives",
+      "Annual impact reporting support",
+      "Logo placement on the WiEZ corporate partners page",
+    ],
+    terms:
+      "Corporate membership covers the organization as a whole and is subject to the Corporate Membership Terms in Section 6.6 of the WiEZ Membership Terms and Conditions.",
   },
 ];
 
@@ -141,6 +238,21 @@ async function seedUser({ name, email, password, role }: TestUser) {
   }
 }
 
+async function seedMembershipTypes() {
+  console.log("Seeding membership types...");
+  for (const membershipType of MEMBERSHIP_TYPE_DEFINITIONS) {
+    const existing = await db.query.membershipTypes.findFirst({
+      where: eq(membershipTypes.name, membershipType.name),
+    });
+    if (existing) {
+      console.log(`  - "${membershipType.name}" already exists, skipping.`);
+      continue;
+    }
+    await db.insert(membershipTypes).values(membershipType);
+    console.log(`  - created "${membershipType.name}" ($${membershipType.fee}/year).`);
+  }
+}
+
 async function seedTestUsers() {
   console.log("Seeding test users...");
   for (const testUser of TEST_USERS) {
@@ -151,6 +263,8 @@ async function seedTestUsers() {
 
 async function main() {
   await seedRoles();
+  console.log();
+  await seedMembershipTypes();
   console.log();
   await seedTestUsers();
 

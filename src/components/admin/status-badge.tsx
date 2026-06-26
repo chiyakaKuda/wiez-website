@@ -9,9 +9,14 @@ const STATUS_STYLES: Record<string, string> = {
   Open: "bg-blue-100 text-blue-700 border-blue-200",
   Upcoming: "bg-blue-100 text-blue-700 border-blue-200",
   Free: "bg-blue-100 text-blue-700 border-blue-200",
+  Confirmed: "bg-blue-100 text-blue-700 border-blue-200",
+  Attended: "bg-green-100 text-green-700 border-green-200",
 
   Pending: "bg-amber-100 text-amber-700 border-amber-200",
   Unpaid: "bg-amber-100 text-amber-700 border-amber-200",
+  "Pending Review": "bg-amber-100 text-amber-700 border-amber-200",
+  Submitted: "bg-amber-100 text-amber-700 border-amber-200",
+  Verified: "bg-green-100 text-green-700 border-green-200",
 
   "Sold Out": "bg-purple-100 text-purple-700 border-purple-200",
 

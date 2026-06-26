@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
@@ -8,9 +8,27 @@ import Logo from "@/components/Logo";
 import { RoleBadge } from "@/components/admin/role-badge";
 import { getVisibleSections, isNavLinkActive } from "@/components/admin/nav-items";
 import { signOutAction } from "@/actions/auth";
+import { getPendingMembershipsCount } from "@/actions/memberships";
+import { getPendingEventRegistrationsCount } from "@/actions/events";
+import { getOpenEnquiriesCount } from "@/actions/whatsapp";
 import { isAdminRole } from "@/lib/rbac";
 import { cn } from "@/lib/utils";
 import type { UserRole } from "@/types/auth";
+
+const BADGE_FETCHERS: Record<string, { roles: UserRole[]; fetch: () => Promise<number> }> = {
+  "/admin/memberships": {
+    roles: ["membership_officer", "org_admin", "super_admin"],
+    fetch: getPendingMembershipsCount,
+  },
+  "/admin/events": {
+    roles: ["events_manager", "org_admin", "super_admin"],
+    fetch: getPendingEventRegistrationsCount,
+  },
+  "/admin/whatsapp": {
+    roles: ["org_admin", "super_admin"],
+    fetch: getOpenEnquiriesCount,
+  },
+};
 
 function initials(name: string): string {
   return name
@@ -35,11 +53,21 @@ export function SidebarNavContent({
   const pathname = usePathname();
   const router = useRouter();
   const [signingOut, setSigningOut] = useState(false);
+  const [badges, setBadges] = useState<Record<string, number>>({});
 
   const isAdmin = roles.some((role) => isAdminRole(role));
   const dashboardHref = isAdmin ? "/admin" : "/dashboard";
   const sections = getVisibleSections(roles, dashboardHref);
   const primaryRole: UserRole = roles[0] ?? "member";
+
+  useEffect(() => {
+    for (const [href, config] of Object.entries(BADGE_FETCHERS)) {
+      if (!roles.some((role) => config.roles.includes(role))) continue;
+      void config.fetch().then((count) => {
+        setBadges((current) => ({ ...current, [href]: count }));
+      });
+    }
+  }, [roles]);
 
   async function handleSignOut() {
     setSigningOut(true);
@@ -66,6 +94,7 @@ export function SidebarNavContent({
               {section.links.map((link) => {
                 const active = isNavLinkActive(pathname, link.href);
                 const Icon = link.icon;
+                const badgeCount = badges[link.href];
                 return (
                   <Link
                     key={link.href}
@@ -80,7 +109,12 @@ export function SidebarNavContent({
                     )}
                   >
                     <Icon className="size-4" />
-                    {link.label}
+                    <span className="flex-1">{link.label}</span>
+                    {!!badgeCount && (
+                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 font-nav text-[11px] font-semibold text-white">
+                        {badgeCount > 99 ? "99+" : badgeCount}
+                      </span>
+                    )}
                   </Link>
                 );
               })}

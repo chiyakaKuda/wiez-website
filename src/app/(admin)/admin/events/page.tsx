@@ -1,40 +1,141 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { toast } from "sonner";
-import { Calendar, CalendarPlus, ImageOff, MapPin, Users } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { createColumnHelper } from "@tanstack/react-table";
+import { ArrowRight, Calendar, CalendarPlus, Clock, TicketCheck, Users } from "lucide-react";
 import { PageHeader } from "@/components/admin/page-header";
 import { FilterBar } from "@/components/admin/filter-bar";
-import { StatusBadge } from "@/components/admin/status-badge";
+import { DataTable } from "@/components/admin/data-table";
+import { StatCard } from "@/components/admin/stat-card";
+import { RowActions } from "@/components/admin/row-actions";
 import { EmptyState } from "@/components/admin/empty-state";
-import { Button } from "@/components/ui/button";
-import { MOCK_EVENTS } from "@/lib/mock-data";
+import { StatusBadge } from "@/components/admin/status-badge";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getAllEvents, type EventListItem } from "@/actions/events";
+import { EVENT_TYPES } from "@/lib/constants";
+import type { EventStatus } from "@/types/events";
 
-const STATUS_OPTIONS = ["Upcoming", "Open", "Sold Out", "Completed", "Cancelled"];
-const TYPE_OPTIONS = ["Free", "Paid", "Member Only"];
+const columnHelper = createColumnHelper<EventListItem>();
 
-export default function EventsPage() {
+const TAB_GROUPS: { label: string; value: string; status: EventStatus | null }[] = [
+  { label: "All", value: "all", status: null },
+  { label: "Draft", value: "draft", status: "draft" },
+  { label: "Published", value: "published", status: "published" },
+  { label: "Cancelled", value: "cancelled", status: "cancelled" },
+  { label: "Completed", value: "completed", status: "completed" },
+];
+
+const STATUS_LABELS: Record<EventStatus, string> = {
+  draft: "Draft",
+  published: "Published",
+  cancelled: "Cancelled",
+  completed: "Completed",
+};
+
+const TYPE_LABELS: Record<string, string> = {
+  free: "Free",
+  paid: "Paid",
+  member_only: "Member Only",
+  corporate_sponsored: "Corporate Sponsored",
+};
+
+export default function AdminEventsPage() {
+  const router = useRouter();
+  const [allRows, setAllRows] = useState<EventListItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [tab, setTab] = useState("all");
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("all");
   const [type, setType] = useState("all");
 
-  const filteredEvents = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    return MOCK_EVENTS.filter((event) => {
-      if (query && !event.name.toLowerCase().includes(query)) return false;
-      if (status !== "all" && event.status !== status) return false;
-      if (type !== "all" && event.type !== type) return false;
-      return true;
-    });
-  }, [search, status, type]);
+  useEffect(() => {
+    const handle = setTimeout(() => {
+      void getAllEvents({
+        search: search || undefined,
+        type: type === "all" ? undefined : (type as (typeof EVENT_TYPES)[number]),
+      }).then((rows) => {
+        setAllRows(rows);
+        setLoading(false);
+      });
+    }, 300);
+    return () => clearTimeout(handle);
+  }, [search, type]);
 
-  const hasActiveFilters = search !== "" || status !== "all" || type !== "all";
+  const activeGroup = TAB_GROUPS.find((group) => group.value === tab);
+  const filteredRows = useMemo(() => {
+    if (!activeGroup?.status) return allRows;
+    return allRows.filter((row) => row.status === activeGroup.status);
+  }, [allRows, activeGroup]);
 
-  function clearFilters() {
-    setSearch("");
-    setStatus("all");
-    setType("all");
-  }
+  const stats = useMemo(
+    () => ({
+      total: allRows.length,
+      upcoming: allRows.filter((r) => r.status === "published" && new Date(r.date) > new Date()).length,
+      pendingRegistrations: allRows.reduce((sum, r) => sum + r.pendingRegistrations, 0),
+      totalRegistered: allRows.reduce((sum, r) => sum + r.registeredCount, 0),
+    }),
+    [allRows]
+  );
+
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("title", {
+        header: "Event",
+        cell: (info) => <p className="font-medium text-navy">{info.getValue()}</p>,
+      }),
+      columnHelper.accessor("date", {
+        header: "Date",
+        cell: (info) =>
+          new Date(info.getValue()).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }),
+      }),
+      columnHelper.accessor("venue", { header: "Venue" }),
+      columnHelper.accessor("type", {
+        header: "Type",
+        cell: (info) => TYPE_LABELS[info.getValue()] ?? info.getValue(),
+      }),
+      columnHelper.display({
+        id: "registered",
+        header: "Registered",
+        cell: ({ row }) => `${row.original.registeredCount}/${row.original.capacity}`,
+      }),
+      columnHelper.accessor("status", {
+        header: "Status",
+        cell: (info) => <StatusBadge status={STATUS_LABELS[info.getValue()]} />,
+      }),
+      columnHelper.accessor("pendingRegistrations", {
+        header: "Pending",
+        cell: (info) =>
+          info.getValue() > 0 ? (
+            <StatusBadge
+              status={`${info.getValue()} Pending`}
+              className="bg-amber-100 text-amber-700 border-amber-200"
+            />
+          ) : (
+            "—"
+          ),
+      }),
+      columnHelper.display({
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => (
+          <RowActions
+            actions={[
+              {
+                label: "Manage",
+                icon: ArrowRight,
+                onClick: () => router.push(`/admin/events/${row.original.id}/manage`),
+              },
+            ]}
+          />
+        ),
+      }),
+    ],
+    [router]
+  );
 
   return (
     <div className="space-y-5">
@@ -44,84 +145,64 @@ export default function EventsPage() {
         action={{
           label: "Create Event",
           icon: CalendarPlus,
-          onClick: () => toast.info("Create event form opened"),
+          onClick: () => router.push("/admin/events/new"),
         }}
       />
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard title="Total Events" value={stats.total} icon={Calendar} index={0} />
+        <StatCard title="Upcoming" value={stats.upcoming} icon={Clock} index={1} />
+        <StatCard
+          title="Pending Registrations"
+          value={stats.pendingRegistrations}
+          icon={Users}
+          highlight={stats.pendingRegistrations > 0}
+          index={2}
+        />
+        <StatCard title="Total Registered" value={stats.totalRegistered} icon={TicketCheck} index={3} />
+      </div>
+
+      <Tabs value={tab} onValueChange={setTab}>
+        <TabsList variant="line" className="flex-wrap">
+          {TAB_GROUPS.map((group) => (
+            <TabsTrigger key={group.value} value={group.value}>
+              {group.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
       <FilterBar
         searchValue={search}
         onSearchChange={setSearch}
-        searchPlaceholder="Search events..."
+        searchPlaceholder="Search by title or venue..."
         selects={[
-          {
-            label: "Status",
-            value: status,
-            onChange: setStatus,
-            options: [
-              { label: "All Statuses", value: "all" },
-              ...STATUS_OPTIONS.map((s) => ({ label: s, value: s })),
-            ],
-          },
           {
             label: "Type",
             value: type,
             onChange: setType,
             options: [
               { label: "All Types", value: "all" },
-              ...TYPE_OPTIONS.map((t) => ({ label: t, value: t })),
+              ...EVENT_TYPES.map((t) => ({ label: TYPE_LABELS[t] ?? t, value: t })),
             ],
           },
         ]}
       />
 
-      {filteredEvents.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredEvents.map((event) => (
-            <div
-              key={event.id}
-              className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
-            >
-              <div className="flex h-32 items-center justify-center bg-slate-100">
-                <ImageOff className="size-6 text-slate-300" />
-              </div>
-              <div className="p-4">
-                <div className="flex items-start justify-between gap-2">
-                  <p className="font-nav text-sm font-semibold text-navy">{event.name}</p>
-                  <StatusBadge status={event.status} className="shrink-0" />
-                </div>
-                <div className="mt-2 space-y-1 font-sans text-xs text-slate-500">
-                  <p className="flex items-center gap-1.5">
-                    <Calendar className="size-3.5" />
-                    {event.date}
-                  </p>
-                  <p className="flex items-center gap-1.5">
-                    <MapPin className="size-3.5" />
-                    {event.venue}
-                  </p>
-                  <p className="flex items-center gap-1.5">
-                    <Users className="size-3.5" />
-                    {event.registrations}/{event.capacity} registered
-                  </p>
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => toast.info(`Managing "${event.name}"`)}
-                  className="mt-3 h-8 w-full rounded-[6px]"
-                >
-                  Manage
-                </Button>
-              </div>
-            </div>
-          ))}
+      {loading ? (
+        <div className="rounded-xl border border-slate-200 bg-white p-10 text-center font-sans text-sm text-slate-400">
+          Loading events...
+        </div>
+      ) : filteredRows.length > 0 ? (
+        <div className="rounded-xl border border-slate-200 bg-white">
+          <DataTable columns={columns} data={filteredRows} />
         </div>
       ) : (
         <EmptyState
           icon={Calendar}
           title="No events found"
           description="Try adjusting your filters, or create a new event to get started."
-          action={hasActiveFilters ? { label: "Clear Filters", onClick: clearFilters } : undefined}
+          action={{ label: "Create Event", onClick: () => router.push("/admin/events/new") }}
         />
       )}
     </div>

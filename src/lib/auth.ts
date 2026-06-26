@@ -29,8 +29,10 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,
-    requireEmailVerification: true,
-    autoSignIn: false,
+    // Verification is disabled for now to keep sign-up simple — flip this
+    // (and sendOnSignUp below) back to true to re-enable it later.
+    requireEmailVerification: false,
+    autoSignIn: true,
     sendResetPassword: async ({ user, url }) => {
       await sendEmail({
         to: user.email,
@@ -46,7 +48,7 @@ export const auth = betterAuth({
   },
 
   emailVerification: {
-    sendOnSignUp: true,
+    sendOnSignUp: false,
     autoSignInAfterVerification: true,
     expiresIn: 3600,
     sendVerificationEmail: async ({ user, url }) => {

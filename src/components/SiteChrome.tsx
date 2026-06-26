@@ -13,6 +13,9 @@ const CHROME_FREE_PREFIXES = [
   "/verify-email",
   "/dashboard",
   "/admin",
+  "/membership/apply",
+  "/membership/application-submitted",
+  "/membership/payment",
 ];
 
 export default function SiteChrome({

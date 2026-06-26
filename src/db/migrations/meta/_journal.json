@@ -8,6 +8,62 @@
       "when": 1782369579960,
       "tag": "0000_premium_the_fallen",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1782396185671,
+      "tag": "0001_white_union_jack",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1782396977885,
+      "tag": "0002_wandering_adam_destine",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1782410323148,
+      "tag": "0003_ambiguous_miek",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1782410521170,
+      "tag": "0004_robust_sharon_carter",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1782411246648,
+      "tag": "0005_next_madame_web",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1782411340195,
+      "tag": "0006_huge_redwing",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1782456473351,
+      "tag": "0007_glamorous_vance_astro",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1782457349549,
+      "tag": "0008_absent_professor_monster",
+      "breakpoints": true
     }
   ]
 }

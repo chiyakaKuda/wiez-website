@@ -7,17 +7,8 @@ import { db } from "@/db";
 import { roles, userRoles } from "@/db/schema";
 import { getUserWithRoles } from "@/lib/auth-utils";
 import { isAdminRole, getRoleLabel } from "@/lib/rbac";
+import { type ActionResult, errorMessage } from "@/lib/action-result";
 import type { UserRole, ZimbabweProvince, EngineeringDiscipline } from "@/types/auth";
-
-type ActionResult<T = undefined> = {
-  success: boolean;
-  error?: string;
-  data?: T;
-};
-
-function errorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : "An unexpected error occurred";
-}
 
 type SignInData = {
   redirectTo: string;
@@ -68,7 +59,7 @@ export type SignUpFormData = {
 
 export async function signUpAction(
   formData: SignUpFormData
-): Promise<ActionResult> {
+): Promise<ActionResult<{ redirectTo: string }>> {
   try {
     const result = await auth.api.signUpEmail({
       body: {
@@ -93,7 +84,9 @@ export async function signUpAction(
       });
     }
 
-    return { success: true };
+    // New sign-ups always get the "member" role, so the dashboard (not
+    // /admin) is always the right landing page now that autoSignIn is on.
+    return { success: true, data: { redirectTo: "/dashboard" } };
   } catch (error) {
     return { success: false, error: errorMessage(error) };
   }

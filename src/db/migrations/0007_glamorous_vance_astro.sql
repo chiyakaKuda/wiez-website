@@ -1,0 +1,1 @@
+ALTER TABLE "event_registrations" ADD COLUMN "admin_approved" boolean DEFAULT false NOT NULL;

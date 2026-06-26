@@ -31,6 +31,8 @@ export const users = pgTable("users", {
   phone: text("phone"),
   province: provinceEnum("province"),
   engineeringDiscipline: engineeringDisciplineEnum("engineering_discipline"),
+  whatsappNumber: text("whatsapp_number").unique(),
+  mustChangePassword: boolean("must_change_password").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
