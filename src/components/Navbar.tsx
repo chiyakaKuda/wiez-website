@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -16,9 +17,15 @@ const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
+// Routes whose hero section is dark (bg-navy) rather than the default light
+// background — the navbar overlaps it transparently before scrolling, so
+// these need light nav text instead of the usual navy-toned text.
+const DARK_HERO_ROUTES = ["/membership"];
+
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -36,9 +43,14 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
-  // The hero behind the navbar is light, so links stay navy-toned at all
-  // scroll positions; only the navy fullscreen mobile menu needs light text.
-  const onDarkBackdrop = isOpen;
+  const hasDarkHero = DARK_HERO_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`)
+  );
+
+  // Light nav text while the mobile menu's navy backdrop is open, or while
+  // sitting unscrolled over a dark hero. Once scrolled, the navbar always
+  // gets its own white blurred background, so links go back to navy-toned.
+  const onDarkBackdrop = isOpen || (hasDarkHero && !isScrolled);
 
   return (
     <>
