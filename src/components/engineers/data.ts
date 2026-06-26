@@ -5,36 +5,30 @@ import type { Engineer } from "./types";
 // before this section goes live.
 
 export const SPOTLIGHT_ENGINEER: Engineer = {
-  id: "spotlight-tendai-mukamuri",
-  name: "Eng. Tendai Mukamuri",
-  discipline: "Structural Engineer",
-  organization: "Apex Infrastructure Group",
+  id: "spotlight-irene-kamutero",
+  name: "Irene Kamutero",
+  discipline: "General Manager – Subsidiaries",
+  organization: "Masimba Holdings Limited",
   province: "Harare",
-  photo: "/profile/welcome.jpg",
+  photo: "/profile/kamutero.png",
   shortBio:
-    "Leads structural design on landmark infrastructure projects across Zimbabwe.",
+    "General Manager – Subsidiaries at Masimba Holdings Limited, leading infrastructure development and engineering operations.",
   fullBio:
-    "Tendai has spent over a decade leading structural design on some of Zimbabwe's most ambitious infrastructure projects, from high-rise developments in Harare to cross-border bridge works. She is a vocal advocate for safety standards in heavy construction and has mentored dozens of young engineers through WiEZ's Infrastructure Chapter.",
-  career: [
-    "Senior Structural Engineer, Apex Infrastructure Group (2019–Present)",
-    "Structural Design Lead, National Roads Authority (2014–2019)",
-    "Graduate Engineer, Apex Infrastructure Group (2011–2014)",
-  ],
+    "Irene Kamutero is General Manager – Subsidiaries at Masimba Holdings Limited, where she leads infrastructure development and engineering operations across the group's subsidiary businesses, with a focus on strategic asset management and corporate governance.",
+  career: [],
   achievements: [
-    "Lead structural engineer on a major interchange upgrade serving over 40,000 daily commuters",
-    "Registered Professional Engineer with the Engineering Council of Zimbabwe",
-    "Founding member of WiEZ's Infrastructure Chapter",
+    "General Manager – Subsidiaries at Masimba Holdings Limited",
+    "Leads infrastructure development and engineering operations across group subsidiaries",
+    "Oversees strategic asset management and corporate governance",
   ],
-  projects: [
-    "Beitbridge Border Post interchange redesign",
-    "Harare CBD high-rise structural retrofit programme",
-    "Rural bridge resilience initiative, Mashonaland West",
+  projects: [],
+  awards: [],
+  badges: [
+    "Infrastructure Development",
+    "Engineering Operations",
+    "Strategic Asset Management",
+    "Corporate Governance",
   ],
-  awards: [
-    "WiEZ Industry Leadership Award, 2024",
-    "Zimbabwe Institution of Engineers — Young Engineer Commendation, 2018",
-  ],
-  badges: ["Industry Leader", "Mentor", "Professional Engineer"],
   linkedin: "#",
 };
 

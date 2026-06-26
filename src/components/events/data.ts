@@ -9,8 +9,7 @@ export const FEATURED_EVENT: Event = {
   category: "Conferences",
   description:
     "Zimbabwe's flagship gathering of women engineers, industry leaders and students — a full day of keynotes, panels and hands-on workshops focused on building the next generation of engineering talent.",
-  image:
-    "/images/female-construction-engineers-working-together-discussing-project-plan.jpg",
+  image: "/profile/event3.png",
   registrationOpen: true,
 };
 
