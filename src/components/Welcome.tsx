@@ -40,8 +40,8 @@ export default function Welcome() {
 
             <div className="relative aspect-[3/4] overflow-hidden rounded-[24px] shadow-2xl shadow-navy/20">
               <Image
-                src="/profile/welcome.jpg"
-                alt="Portrait of the President of Women in Engineering Zimbabwe"
+                src="/profile/berverly.png"
+                alt="Portrait of Berverly Nyakutsikwa, Chair of Women in Engineering Zimbabwe"
                 fill
                 priority
                 className="object-cover"
@@ -100,12 +100,12 @@ export default function Welcome() {
           </motion.div>
 
           <motion.div variants={itemVariants} className="mt-10">
-            {/* Placeholder name — swap in the actual president's name. */}
             <p className="font-heading text-lg font-extrabold text-navy">
-              Eng. Jane Moyo
+              Berverly Nyakutsikwa (Pr.Eng)
             </p>
             <p className="mt-1 font-sans text-sm text-slate-custom">
-              President, Women in Engineering Zimbabwe
+              Civil and Water Engineer | Chair – Women in Engineering Zimbabwe | TechWomen | AWE |
+              EaglesNest | Next She Exporter
             </p>
             <svg
               width="140"
