@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
 };
 module.exports = {
-  allowedDevOrigins: ['10.0.4.209'],
+  allowedDevOrigins: ['10.0.4.209','10.0.7.129'],
+ 
 };
 export default nextConfig;

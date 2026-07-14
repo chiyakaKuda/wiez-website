@@ -1,24 +1,25 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
+// The brand mark is a white-background lockup, so on dark surfaces (footer,
+// dark hero) we frame it in a white badge; on light surfaces it sits bare and
+// blends in. Callers keep passing `light` exactly as before.
 export default function Logo({ light = false }: { light?: boolean }) {
   return (
-    <div className="flex flex-col leading-none">
-      <span
-        className={cn(
-          "font-heading text-2xl font-extrabold tracking-tight transition-colors duration-300",
-          light ? "text-white" : "text-navy"
-        )}
-      >
-        W<span className="text-lime">i</span>EZ
-      </span>
-      <span
-        className={cn(
-          "mt-1 font-nav text-[10px] font-medium uppercase tracking-[0.18em] transition-colors duration-300",
-          light ? "text-white/70" : "text-slate-custom"
-        )}
-      >
-        Women in Engineering Zimbabwe
-      </span>
-    </div>
+    <span
+      className={cn(
+        "inline-flex items-center",
+        light && "rounded-lg bg-white px-2.5 py-1.5 shadow-sm"
+      )}
+    >
+      <Image
+        src="/logos/wiez-logo.png"
+        alt="WiEZ — Women in Engineering Zimbabwe"
+        width={578}
+        height={244}
+        priority
+        className="h-9 w-auto sm:h-10"
+      />
+    </span>
   );
 }

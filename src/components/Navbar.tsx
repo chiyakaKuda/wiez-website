@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -90,33 +91,47 @@ export default function Navbar() {
             ))}
           </div>
 
-          <div className="hidden lg:flex">
+          <div className="flex items-center gap-3 sm:gap-4">
             <Link
               href="/membership"
-              className="rounded-full bg-lime px-5 py-2.5 font-nav text-sm font-semibold text-navy transition-transform duration-300 hover:scale-105"
+              className="hidden rounded-full bg-lime px-5 py-2.5 font-nav text-sm font-semibold text-navy transition-transform duration-300 hover:scale-105 lg:inline-flex"
             >
               Join Network
             </Link>
-          </div>
 
-          <button
-            type="button"
-            onClick={() => setIsOpen((open) => !open)}
-            aria-label="Toggle menu"
-            aria-expanded={isOpen}
-            className="z-50 -mr-2 p-2 lg:hidden"
-          >
-            {isOpen ? (
-              <X className="h-7 w-7 text-white" />
-            ) : (
-              <Menu
-                className={cn(
-                  "h-7 w-7 transition-colors duration-300",
-                  onDarkBackdrop ? "text-white" : "text-navy"
-                )}
+            {/* Affiliation mark — The Zimbabwe Institution of Engineers */}
+            <span
+              title="Affiliated with The Zimbabwe Institution of Engineers"
+              className="flex h-13 w-13 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-md ring-2 ring-lime transition-transform duration-300 hover:scale-105 sm:h-14 sm:w-14"
+            >
+              <Image
+                src="/logos/zie-seal.jpeg"
+                alt="The Zimbabwe Institution of Engineers"
+                width={594}
+                height={640}
+                className="h-full w-full object-contain p-1"
               />
-            )}
-          </button>
+            </span>
+
+            <button
+              type="button"
+              onClick={() => setIsOpen((open) => !open)}
+              aria-label="Toggle menu"
+              aria-expanded={isOpen}
+              className="z-50 -mr-2 p-2 lg:hidden"
+            >
+              {isOpen ? (
+                <X className="h-7 w-7 text-white" />
+              ) : (
+                <Menu
+                  className={cn(
+                    "h-7 w-7 transition-colors duration-300",
+                    onDarkBackdrop ? "text-white" : "text-navy"
+                  )}
+                />
+              )}
+            </button>
+          </div>
         </nav>
       </motion.header>
 
