@@ -102,7 +102,7 @@ export default function Navbar() {
             {/* Affiliation mark — The Zimbabwe Institution of Engineers */}
             <span
               title="Affiliated with The Zimbabwe Institution of Engineers"
-              className="flex h-13 w-13 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-md ring-2 ring-lime transition-transform duration-300 hover:scale-105 sm:h-14 sm:w-14"
+              className="flex h-13 w-13 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-md transition-transform duration-300 hover:scale-105 sm:h-14 sm:w-14"
             >
               <Image
                 src="/logos/zie-seal.jpeg"
