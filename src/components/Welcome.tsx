@@ -126,7 +126,7 @@ export default function Welcome() {
 
           <motion.div variants={itemVariants} className="mt-10">
             <Link
-              href="/about/vision"
+              href="/about"
               className="group inline-flex items-center gap-2 rounded-full border border-navy/15 px-7 py-3.5 font-nav text-sm font-semibold text-navy transition-all duration-300 hover:border-navy hover:bg-navy hover:text-white"
             >
               Read Our Vision

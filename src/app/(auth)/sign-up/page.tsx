@@ -360,7 +360,7 @@ export default function SignUpPage() {
                   />
                   <Label htmlFor="terms" className="font-normal text-slate-custom">
                     I agree to the{" "}
-                    <Link href="/terms" className="font-semibold text-navy hover:text-lime">
+                    <Link href="/terms-of-use" className="font-semibold text-navy hover:text-lime">
                       Terms and Conditions
                     </Link>
                   </Label>

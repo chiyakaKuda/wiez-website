@@ -151,13 +151,13 @@ export default function Partners() {
 
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
-                href="/partners/become-a-partner"
+                href="/membership"
                 className="inline-flex items-center justify-center rounded-full bg-lime px-7 py-3.5 font-nav text-sm font-semibold text-navy transition-transform duration-300 hover:scale-105"
               >
                 Become a Partner
               </Link>
               <Link
-                href="/partners/sponsor-an-event"
+                href="/contact"
                 className="inline-flex items-center justify-center rounded-full border border-navy/15 px-7 py-3.5 font-nav text-sm font-semibold text-navy transition-colors duration-300 hover:bg-navy/5"
               >
                 Sponsor an Event
@@ -191,7 +191,7 @@ export default function Partners() {
 
             <div className="mt-9 flex flex-wrap justify-center gap-4">
               <Link
-                href="/partners/become-a-partner"
+                href="/membership"
                 className="inline-flex items-center justify-center rounded-full bg-lime px-7 py-3.5 font-nav text-sm font-semibold text-navy transition-transform duration-300 hover:scale-105"
               >
                 Become a Partner

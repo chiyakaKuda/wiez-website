@@ -22,42 +22,42 @@ const PROGRAMS = [
     title: "Mentorship Program",
     description:
       "Connect students and graduates with experienced engineers for guidance and career growth.",
-    href: "/programs/mentorship",
+    href: "/membership",
   },
   {
     icon: Award,
     title: "Leadership Development",
     description:
       "Build leadership skills through workshops, coaching and executive development programs.",
-    href: "/programs/leadership",
+    href: "/membership",
   },
   {
     icon: GraduationCap,
     title: "STEM Outreach",
     description:
       "Inspire the next generation of girls through school visits and STEM engagement initiatives.",
-    href: "/programs/stem-outreach",
+    href: "/contact",
   },
   {
     icon: Lightbulb,
     title: "Research & Innovation",
     description:
       "Support research, innovation and technical excellence across engineering disciplines.",
-    href: "/programs/research",
+    href: "/membership",
   },
   {
     icon: Briefcase,
     title: "Scholarships & Opportunities",
     description:
       "Provide access to scholarships, internships and career opportunities.",
-    href: "/programs/scholarships",
+    href: "/membership",
   },
   {
     icon: Network,
     title: "Networking & Events",
     description:
       "Create connections through conferences, networking events and professional gatherings.",
-    href: "/programs/networking",
+    href: "/events",
   },
 ];
 
@@ -163,13 +163,13 @@ export default function Programs() {
 
             <div className="mt-9 flex flex-wrap gap-4">
               <Link
-                href="/programs/mentorship/mentee"
+                href="/membership"
                 className="inline-flex items-center justify-center rounded-full bg-lime px-7 py-3.5 font-nav text-sm font-semibold text-navy transition-transform duration-300 hover:scale-105"
               >
                 Become a Mentee
               </Link>
               <Link
-                href="/programs/mentorship/mentor"
+                href="/membership"
                 className="inline-flex items-center justify-center rounded-full border border-navy/15 px-7 py-3.5 font-nav text-sm font-semibold text-navy transition-colors duration-300 hover:bg-navy/5"
               >
                 Become a Mentor

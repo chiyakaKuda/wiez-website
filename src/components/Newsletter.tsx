@@ -108,22 +108,6 @@ export default function Newsletter() {
           </motion.div>
         </motion.div>
       </div>
-
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 z-10 h-16 text-white sm:h-20 lg:h-24"
-      >
-        <svg
-          viewBox="0 0 1440 100"
-          preserveAspectRatio="none"
-          className="h-full w-full"
-        >
-          <path
-            d="M0,40 C360,100 1080,0 1440,60 L1440,100 L0,100 Z"
-            fill="currentColor"
-          />
-        </svg>
-      </div>
     </section>
   );
 }

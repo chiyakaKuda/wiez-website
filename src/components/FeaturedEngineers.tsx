@@ -118,7 +118,7 @@ export default function FeaturedEngineers() {
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
-              href="/engineers/nominate"
+              href="/contact"
               className="inline-flex items-center justify-center rounded-full bg-lime px-7 py-3.5 font-nav text-sm font-semibold text-navy transition-transform duration-300 hover:scale-105"
             >
               Submit Nomination

@@ -12,10 +12,10 @@ export const QUICK_LINKS = [
 ];
 
 export const RESOURCE_LINKS = [
-  { label: "Mentorship", href: "/programs/mentorship" },
-  { label: "Scholarships", href: "/programs/scholarships" },
-  { label: "News", href: "/news" },
-  { label: "Careers", href: "/careers" },
+  { label: "Mentorship", href: "/programs" },
+  { label: "Scholarships", href: "/programs" },
+  { label: "News", href: "/events" },
+  { label: "Careers", href: "/about" },
 ];
 
 export const LEGAL_LINKS = [
